@@ -1,0 +1,19 @@
+name: Install ansible python3 mysql dependency
+  apt:
+    name: "{{ python_dependency }}"
+    state: latest
+
+- name: Install the MySQL packages
+   apt: name={{ item }} state=installed update_cache=yes
+   with_items:
+     - mysql-server-5.6
+     - mysql-client-5.6
+     - python-mysqldb
+     - libmysqlclient-dev
+
+ - name: Update MySQL root password for all root accounts
+   mysql_user: name=root host= "{{ database_name }}" password= "{{ my_password }}" state=present
+   with_items:
+     - 3.84.104.254
+     - ::1
+     - localhost

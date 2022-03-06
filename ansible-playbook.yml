@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  become: yes
+  roles:
+  - web
+  - java
+  - Jenkins
+
+---
+- hosts: dbservers
+  become: yes
+  roles:
+  - postgres
+  - mysql
+  

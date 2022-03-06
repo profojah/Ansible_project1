@@ -1,0 +1,42 @@
+---
+- hosts: webservers
+  become: yes
+  vars:
+  - package_name: apache2
+  - another_var: openjdk-11-jdk
+  - home_path: /home/ubuntu
+ 
+  tasks:
+  - name: Install latest version of Apache
+    apt:
+      name: "{{ package_name }}"
+      update_cache: yes
+      state: present
+ 
+  - name: Install latest Java on Nodes
+    apt:
+      name: "{{ another_var }}"
+      update_cache: yes
+      state: present
+ 
+  - name: Copy file with owner and permissions
+    copy:
+      src: test.txt
+      dest: "{{ home_path }}"
+ 
+  - name: Install Jenkins dependencies
+    shell: |
+       curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+       echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+       /etc/apt/sources.list.d/jenkins.list > /dev/null
+ 
+  - name: Install Jenkins
+    apt:
+      name: jenkins
+      update_cache: yes
+      state: present
+ 
+  - name: Install Jenkins dependencies
+    shell: cat /var/lib/jenkins/secrets/initialAdminPassword > JenkinsPassword.txt
+ 
+

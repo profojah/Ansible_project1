@@ -1,0 +1,10 @@
+- hosts: webservers
+  become: yes
+
+
+  tasks:
+  - name: Install Java on the Nodes
+    apt:
+      name: "{{ type_of_package }}"
+      update_cache: yes
+      state: present
